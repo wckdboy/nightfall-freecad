@@ -1,0 +1,154 @@
+{
+  "kind": "nightfall-gui-integration",
+  "passed": true,
+  "checks": [
+    "plane action enters native Sketcher; nested creation disabled",
+    "feedback follows 3 to 2 native freedoms while remaining flexible",
+    "fixed-radius circle highlights its free centre without model/undo edits",
+    "mixed sketch highlights free line endpoints and excludes constrained circle",
+    "native conflict/redundancy witnesses selected without repair or undo changes",
+    "native length-5 preview cancels with Escape; second Escape exits the tool",
+    "actions unavailable outside native sketch edit",
+    "unfinished constraints accepted; human and AI facts agree",
+    "actual Qt main-window screenshot"
+  ],
+  "version": [
+    "1",
+    "1",
+    "4",
+    "20260928 (Git shallow)",
+    "Unknown",
+    "2026/09/28 13:46:34",
+    "(HEAD detached at 4fd3bf320)",
+    "4fd3bf320d9566a27e60069fc8387448aaa3a094"
+  ],
+  "gui_up": 1,
+  "scope": "Native Qt widget and FreeCAD API integration; not accessibility or a full C++ rebuild",
+  "accessibility_stability": "failed in separate interactive sessions; issue #2",
+  "dimension_cancel": [
+    {
+      "route": "native_scene_events",
+      "transaction": [
+        "Add length constraint",
+        3
+      ],
+      "preview_constraint_count": 4,
+      "preview_type": "Distance",
+      "preview_value": 5.0,
+      "transaction_pending": true,
+      "pending_edit_guard": true,
+      "after_first_escape": {
+        "transaction": [
+          "Dimension",
+          4
+        ],
+        "constraint_count": 3,
+        "transaction_pending": false
+      }
+    }
+  ],
+  "dimension_transaction_after": null,
+  "dimension_history": {
+    "before": [
+      1,
+      0,
+      false
+    ],
+    "after": [
+      1,
+      0,
+      false
+    ]
+  },
+  "pointer_placement_preview_checked": false,
+  "keyboard_input_bridge_checked": false,
+  "sketch": {
+    "kind": "nightfall.sketch-feedback.v1",
+    "document": "Nightfall",
+    "object": "Sketch",
+    "label": "Sketch (XY)",
+    "status": "underconstrained",
+    "degrees_of_freedom": 2,
+    "geometry_count": 1,
+    "cached_degrees_of_freedom": 2,
+    "constraint_count": 1,
+    "constraints": {
+      "numbering": "one_based",
+      "conflicting": [],
+      "redundant": [],
+      "partially_redundant": [],
+      "malformed": []
+    },
+    "diagnostics_freshness": "reported_up_to_date",
+    "native_state": [
+      "Up-to-date"
+    ],
+    "transaction_pending": false,
+    "freecad_version": [
+      "1",
+      "1",
+      "4",
+      "20260928 (Git shallow)",
+      "Unknown",
+      "2026/09/28 13:46:34",
+      "(HEAD detached at 4fd3bf320)",
+      "4fd3bf320d9566a27e60069fc8387448aaa3a094"
+    ],
+    "checked": [
+      "cached_native_solver_diagnostics"
+    ],
+    "unchecked": [
+      "geometric_intent",
+      "profile_closure",
+      "manufacturing_readiness"
+    ]
+  },
+  "brep_sha256": "901fe780c0421e6b1ad6e2b353887ad6f61ce35fb530077f8771587040facd83",
+  "editing_capture": {
+    "sketch": {
+      "kind": "nightfall.sketch-feedback.v1",
+      "document": "Nightfall",
+      "object": "Sketch",
+      "label": "Sketch (XY)",
+      "status": "needs_recompute",
+      "degrees_of_freedom": null,
+      "geometry_count": 1,
+      "cached_degrees_of_freedom": 2,
+      "constraint_count": 1,
+      "constraints": {
+        "numbering": "one_based",
+        "conflicting": [],
+        "redundant": [],
+        "partially_redundant": [],
+        "malformed": []
+      },
+      "diagnostics_freshness": "unverified",
+      "native_state": [
+        "Touched"
+      ],
+      "transaction_pending": false,
+      "freecad_version": [
+        "1",
+        "1",
+        "4",
+        "20260928 (Git shallow)",
+        "Unknown",
+        "2026/09/28 13:46:34",
+        "(HEAD detached at 4fd3bf320)",
+        "4fd3bf320d9566a27e60069fc8387448aaa3a094"
+      ],
+      "checked": [],
+      "unchecked": [
+        "geometric_intent",
+        "profile_closure",
+        "manufacturing_readiness"
+      ]
+    },
+    "enabled_actions": {
+      "freedoms": true,
+      "dimension": true,
+      "review": false
+    }
+  },
+  "capture_scope": "Qt widgets; OpenGL scene exported separately in sketch-viewport.png"
+}

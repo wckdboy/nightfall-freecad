@@ -44,7 +44,7 @@ class SketchFeedbackTests(unittest.TestCase):
         sketch = self.circle()
         before = (
             sketch.Shape.exportBrepToString(),
-            repr(sketch.Constraints),
+            tuple(constraint.Content for constraint in sketch.Constraints),
             tuple(sketch.State),
             self.doc.UndoCount,
             self.doc.RedoCount,
@@ -58,7 +58,7 @@ class SketchFeedbackTests(unittest.TestCase):
             before,
             (
                 sketch.Shape.exportBrepToString(),
-                repr(sketch.Constraints),
+                tuple(constraint.Content for constraint in sketch.Constraints),
                 tuple(sketch.State),
                 self.doc.UndoCount,
                 self.doc.RedoCount,
@@ -70,7 +70,7 @@ class SketchFeedbackTests(unittest.TestCase):
         sketch.addConstraint(Sketcher.Constraint("Radius", 0, 3))
         sketch.addConstraint(Sketcher.Constraint("Radius", 0, 5))
         self.doc.recompute()
-        before = repr(sketch.Constraints)
+        before = tuple(constraint.Content for constraint in sketch.Constraints)
         report = Nightfall.inspect_sketch(sketch)
         self.assertIn(report["status"], ("conflicting", "overconstrained"))
         self.assertEqual(set(report["constraints"]["conflicting"]), {1, 2})
@@ -78,7 +78,7 @@ class SketchFeedbackTests(unittest.TestCase):
         if "Touched" in sketch.State:
             self.assertEqual(report["diagnostics_freshness"], "unverified")
             self.assertIsNone(report["degrees_of_freedom"])
-        self.assertEqual(before, repr(sketch.Constraints))
+        self.assertEqual(before, tuple(constraint.Content for constraint in sketch.Constraints))
 
     def test_redundancy_is_reported_without_auto_deletion(self):
         sketch = self.circle()
@@ -168,13 +168,27 @@ class SketchFeedbackTests(unittest.TestCase):
         self.assertEqual(Nightfall.inspect_sketch(self.doc.Sketch)["degrees_of_freedom"], 2)
 
     def test_pending_user_transaction_is_preserved(self):
+        sketch = self.circle()
+        before = (
+            {obj.Name for obj in self.doc.Objects},
+            tuple(constraint.Content for constraint in sketch.Constraints),
+        )
+        self.assertFalse(Nightfall.inspect_sketch(sketch)["transaction_pending"])
         self.doc.openTransaction("User work")
         self.doc.addObject("Part::Box", "UserBox")
+        self.assertTrue(Nightfall.inspect_sketch(sketch)["transaction_pending"])
         with self.assertRaises(ValueError):
             Nightfall.new_sketch(self.doc, "XY")
         self.assertTrue(self.doc.HasPendingTransaction)
         self.doc.abortTransaction()
-        self.assertFalse(self.doc.Objects)
+        self.assertFalse(Nightfall.inspect_sketch(sketch)["transaction_pending"])
+        self.assertEqual(
+            before,
+            (
+                {obj.Name for obj in self.doc.Objects},
+                tuple(constraint.Content for constraint in sketch.Constraints),
+            ),
+        )
 
     def test_empty_and_wrong_type(self):
         sketch = self.doc.addObject("Sketcher::SketchObject", "Sketch")

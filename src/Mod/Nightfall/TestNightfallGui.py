@@ -35,6 +35,13 @@ def run_tests():
         (out / "gui.json").write_text(json.dumps(report, indent=2) + "\n")
         if document_name in App.listDocuments():
             if Gui.activeDocument().getInEdit() is not None:
+                transaction = App.getActiveTransaction()
+                if transaction is not None:
+                    from TestNightfallActions import cancel_native_dimension
+
+                    cancel_native_dimension()
+                    if App.getActiveTransaction() is not None:
+                        cancel_native_dimension()
                 Gui.activeDocument().resetEdit()
             App.closeDocument(document_name)
         QtCore.QTimer.singleShot(300, QtWidgets.QApplication.quit)
@@ -68,6 +75,7 @@ def run_tests():
             assert sketch.AttachmentSupport[0][0].Role == "XY_Plane"
             panel.refresh()
             assert not panel.create.isEnabled() and not panel.plane.isEnabled()
+            assert all(not button.isEnabled() for button in panel.action_buttons.values())
             report["checks"].append("plane action enters native Sketcher; nested creation disabled")
             sketch.addGeometry(Part.Circle(App.Vector(4, 6, 0), App.Vector(0, 0, 1), 3))
             assert sketch.solve() == 0
@@ -82,11 +90,23 @@ def run_tests():
             report["checks"].append(
                 "feedback follows 3 to 2 native freedoms while remaining flexible"
             )
+            from TestNightfallActions import exercise_actions
+
+            exercise_actions(panel, sketch, report)
             Gui.activeDocument().resetEdit()
             sketch.Document.recompute()
             panel.refresh()
             assert panel._report == Nightfall.inspect_sketch(sketch)
             assert panel._report["degrees_of_freedom"] == 2 and panel.create.isEnabled()
+            assert all(not button.isEnabled() for button in panel.action_buttons.values())
+            before_selection = Gui.Selection.getSelection()
+            try:
+                panel.run_sketch_action("freedoms")
+                raise AssertionError("action outside sketch edit must reject")
+            except ValueError:
+                pass
+            assert Gui.Selection.getSelection() == before_selection
+            report["checks"].append("actions unavailable outside native sketch edit")
             assert abs(sketch.Shape.Length - 2 * math.pi * 3) <= 1e-9
             report["checks"].append("unfinished constraints accepted; human and AI facts agree")
             report["sketch"] = panel._report
@@ -94,6 +114,15 @@ def run_tests():
                 sketch.Shape.exportBrepToString().encode()
             ).hexdigest()
             sketch.Document.saveAs(str(out / "sketch-study.FCStd"))
+            Gui.activeDocument().setEdit(sketch.Name)
+            panel.run_sketch_action("freedoms")
+            panel.refresh()
+            report["editing_capture"] = {
+                "sketch": panel._report,
+                "enabled_actions": {
+                    key: button.isEnabled() for key, button in panel.action_buttons.items()
+                },
+            }
             Gui.activeDocument().activeView().viewTop()
             Gui.activeDocument().activeView().fitAll()
             Gui.getMainWindow().resize(1440, 960)

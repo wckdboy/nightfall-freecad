@@ -19,6 +19,8 @@ The Nightfall workbench adds a native sketch companion:
 - Create a sketch on a body's XY, XZ or YZ origin plane as one undo step.
 - Keep underconstrained sketches usable while exploring; add precision as needed.
 - Show native freedoms, conflicts and redundancy without silently repairing the sketch.
+- Highlight what can still move and select flagged constraints for review.
+- Start contextual dimensions with native previews; keep pending edits protected.
 - Copy the same compact cached solver facts for AI, with stale/unchecked scope explicit.
 - Use existing Part Design, Sketcher, Assembly and Draft commands and documents.
 
@@ -32,8 +34,23 @@ Select **Nightfall** in the workbench selector. This loads fork Python source in
 official runtime; it is not a compiled and packaged Nightfall C++ application build.
 The normal CMake build also copies/installs the Nightfall module.
 
+While editing a sketch, **Show what can move** highlights its remaining freedoms.
+**Dimension selection…** starts FreeCAD's contextual tool: select geometry, place the
+dimension, use **M** to change its type, and use **Esc** to discard the current preview.
+A second **Esc** exits the tool. **Review flagged constraints** selects native conflict
+or redundancy witnesses for your review. Actions wait while another sketch edit is
+pending; copied facts expose that state as `transaction_pending`.
+
 Native tests use the same runtime, with `NIGHTFALL_TEST_OUTPUT` set to an output JSON
 path, then `FreeCADCmd -P /absolute/path/to/src/Mod/Nightfall /absolute/path/to/src/Mod/Nightfall/RunTests.py`.
+
+The native GUI fixture runs `FreeCAD -M /absolute/path/to/src/Mod/Nightfall
+/absolute/path/to/src/Mod/Nightfall/RunGuiTests.FCMacro` with `NIGHTFALL_GUI_OUTPUT`
+set to an existing output directory. Dimension cancellation uses native Coin scene
+events; pointer placement and the Qt keyboard bridge remain unchecked. Interactive
+macOS accessibility crashes remain open in [#2](https://github.com/wckdboy/nightfall-freecad/issues/2).
+The [guided sketch evidence](nightfall/evidence/guided-sketch-actions.json) binds the
+tested source, native results, actual screenshots and remaining verification gaps.
 
 ## Capability milestones
 

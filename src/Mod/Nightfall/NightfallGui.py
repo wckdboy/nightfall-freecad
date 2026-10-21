@@ -73,6 +73,28 @@ class Panel(QtWidgets.QDockWidget):
         self.detail = QtWidgets.QLabel()
         self.detail.setWordWrap(True)
         layout.addWidget(self.detail)
+        self.action_buttons = {}
+        for action, label, tooltip in (
+            ("freedoms", "Show what can move", "Highlight geometry with remaining freedoms."),
+            (
+                "dimension",
+                "Dimension selection…",
+                "Select geometry, then place a dimension. M changes its type. "
+                "Esc discards the preview; Esc again exits the tool.",
+            ),
+            (
+                "review",
+                "Review flagged constraints",
+                "Select the reported constraints so you can review your intent.",
+            ),
+        ):
+            button = QtWidgets.QPushButton(label)
+            button.setToolTip(tooltip)
+            button.clicked.connect(
+                lambda checked=False, key=action: self.activate_sketch_action(key)
+            )
+            self.action_buttons[action] = button
+            layout.addWidget(button)
         refresh = QtWidgets.QPushButton("Refresh facts")
         refresh.clicked.connect(self.refresh)
         layout.addWidget(refresh)
@@ -121,6 +143,8 @@ class Panel(QtWidgets.QDockWidget):
         sketch = self.current_sketch()
         self._report = Nightfall.inspect_sketch(sketch) if sketch else None
         self.copy.setEnabled(self._report is not None)
+        for action, enabled in self.available_sketch_actions().items():
+            self.action_buttons[action].setEnabled(enabled)
         if self._report is None:
             self.summary.setText("Choose a plane to begin")
             self.detail.setText(
@@ -164,6 +188,69 @@ class Panel(QtWidgets.QDockWidget):
             if self._report["diagnostics_freshness"] == "unverified":
                 detail += " Recompute to confirm these cached solver facts."
             self.detail.setText(detail)
+        if self._report["transaction_pending"]:
+            self.detail.setText(
+                "Finish or cancel the current sketch action before starting another."
+            )
+
+    def edited_sketch(self):
+        document = Gui.activeDocument()
+        edited = document.getInEdit() if document else None
+        if edited and edited.Object.isDerivedFrom("Sketcher::SketchObject"):
+            return edited.Object
+        return None
+
+    @staticmethod
+    def review_command(report):
+        for key, command in (
+            ("conflicting", "Sketcher_SelectConflictingConstraints"),
+            ("redundant", "Sketcher_SelectRedundantConstraints"),
+            ("partially_redundant", "Sketcher_SelectPartiallyRedundantConstraints"),
+        ):
+            if report["constraints"][key]:
+                return command
+        return None
+
+    def available_sketch_actions(self):
+        sketch = self.edited_sketch()
+        if sketch is None or sketch.Document.HasPendingTransaction:
+            return dict.fromkeys(("freedoms", "dimension", "review"), False)
+        report = Nightfall.inspect_sketch(sketch)
+        problem = report["status"] == "solver_error" or any(
+            values for key, values in report["constraints"].items() if key != "numbering"
+        )
+        dof = report["cached_degrees_of_freedom"]
+        return {
+            "freedoms": dof is not None and dof > 0 and not problem,
+            "dimension": sketch.GeometryCount > 0
+            and dof is not None
+            and not problem
+            and all(obj == sketch for obj in Gui.Selection.getSelection()),
+            "review": self.review_command(report) is not None,
+        }
+
+    def run_sketch_action(self, action):
+        """Dispatch a native interaction only in its current sketch editing context."""
+        if action not in ("freedoms", "dimension", "review"):
+            raise ValueError("Unknown sketch action")
+        sketch = self.edited_sketch()
+        if sketch is None:
+            raise ValueError("Open a sketch to use its guided actions")
+        if not self.available_sketch_actions()[action]:
+            raise ValueError("Check the sketch feedback and select geometry in the active sketch")
+        command = {
+            "freedoms": "Sketcher_SelectElementsWithDoFs",
+            "dimension": "Sketcher_Dimension",
+            "review": self.review_command(Nightfall.inspect_sketch(sketch)),
+        }[action]
+        Gui.runCommand(command)
+        self.schedule_refresh()
+
+    def activate_sketch_action(self, action):
+        try:
+            self.run_sketch_action(action)
+        except (ValueError, RuntimeError) as error:
+            self.detail.setText(str(error))
 
     def copy_report(self):
         self.refresh()
