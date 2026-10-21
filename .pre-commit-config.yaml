@@ -22,6 +22,7 @@ files: |
         src/Mod/Measure|
         src/Mod/MeshPart|
         src/Mod/Mesh|
+        src/Mod/Nightfall|
         src/Mod/PartDesign|
         src/Mod/Part|
         src/Mod/Plot|
