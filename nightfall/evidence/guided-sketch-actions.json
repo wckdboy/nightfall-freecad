@@ -1,0 +1,233 @@
+{
+  "kind": "nightfall-guided-sketch-actions-evidence",
+  "version": 1,
+  "base_commit": "0763625e240f66e644d030feafca14845bfbb7ac",
+  "issue": "https://github.com/wckdboy/nightfall-freecad/issues/4",
+  "upstream": {
+    "release": "1.1.4",
+    "commit": "4fd3bf320d9566a27e60069fc8387448aaa3a094",
+    "release_asset_sha256": "071343b4abb70492b75c973f41eaf1d2528f9b9c7ea018d22a4f46ae14d27ac0",
+    "runtime": "official macOS arm64 bundle loading fork Python files; C++ application not rebuilt"
+  },
+  "source_sha256": {
+    "src/Mod/Nightfall/CMakeLists.txt": "3779780e7bdb5e77770ca8cd810e5437dd409ecac073e70ba0c6fe2b73d65c89",
+    "src/Mod/Nightfall/NightfallGui.py": "f97deef4cda41037766f01a7093960e4b8b748a368b9614eb8207b0b3ef3ffe5",
+    "src/Mod/Nightfall/InitGui.py": "88d730fb3781fe3ba681080e4e5de651e6a17b4ddd0644cd87f000b11f97b8f5",
+    "src/Mod/Nightfall/TestNightfallGui.py": "af2dcb701bab861b0051bd0ab5c46fe7fce7b15754f2958ac2e3455814a540d0",
+    "src/Mod/Nightfall/TestNightfallActions.py": "d9bb0ccdec34e71355f9c0f6b45308ba84437a80b20f024a8dc3c03c7efa6628",
+    "src/Mod/Nightfall/TestNightfall.py": "643958281dbc5440542f1a438654a9a80a0993fd39da347c94205b090eadc10b",
+    "src/Mod/Nightfall/Nightfall.py": "ef590de45d61a2483681cef667414a15242797840b350f1396f051aeee5667dc",
+    "src/Mod/Nightfall/Init.py": "75aa4544726c42c196578423451a36498e2e7407efdf55f2d869b26aadfabc0d",
+    "src/Mod/Nightfall/RunTests.py": "4b67f8d24f245284b0f050a29e2fcb6dd1d5442049238a953867def1c78076af",
+    "src/Mod/Nightfall/RunGuiTests.FCMacro": "375ec5d127b9567a0bcacf3a26d5d03168e6d417ddc3bea4baa28dfb2d387e06"
+  },
+  "headless": {
+    "passed": true,
+    "process_exit": 0,
+    "tests": 11,
+    "failures": 0,
+    "errors": 0,
+    "whole_process_seconds": 9.688456290998147,
+    "test_seconds": 0.25186420799582265,
+    "inspection_200_reads_mean_ms": 0.019648330053314567,
+    "scope": "Real Sketcher/Part native runtime; no full C++ rebuild or full FreeCAD suite",
+    "runtime_binary_sha256": "67a66f17b663637bcf022330b37559813e65417e2a96f9da1bb3ae34cad08b60"
+  },
+  "gui": {
+    "passed": true,
+    "process_exit": 0,
+    "whole_process_seconds": 5.742314583010739,
+    "checks": [
+      "plane action enters native Sketcher; nested creation disabled",
+      "feedback follows 3 to 2 native freedoms while remaining flexible",
+      "fixed-radius circle highlights its free centre without model/undo edits",
+      "mixed sketch highlights free line endpoints and excludes constrained circle",
+      "native conflict/redundancy witnesses selected without repair or undo changes",
+      "native length-5 preview cancels with Escape; second Escape exits the tool",
+      "actions unavailable outside native sketch edit",
+      "unfinished constraints accepted; human and AI facts agree",
+      "actual Qt main-window screenshot"
+    ],
+    "scope": "Native Qt widget and FreeCAD API integration; not accessibility or a full C++ rebuild",
+    "capture_scope": "Qt widgets; OpenGL scene exported separately in sketch-viewport.png",
+    "dimension_cancel": [
+      {
+        "route": "native_scene_events",
+        "transaction": [
+          "Add length constraint",
+          3
+        ],
+        "preview_constraint_count": 4,
+        "preview_type": "Distance",
+        "preview_value": 5.0,
+        "transaction_pending": true,
+        "pending_edit_guard": true,
+        "after_first_escape": {
+          "transaction": [
+            "Dimension",
+            4
+          ],
+          "constraint_count": 3,
+          "transaction_pending": false
+        }
+      }
+    ],
+    "dimension_history": {
+      "before": [
+        1,
+        0,
+        false
+      ],
+      "after": [
+        1,
+        0,
+        false
+      ]
+    },
+    "dimension_transaction_after": null,
+    "model_witness": "Exact native Geometry.Content and Constraint.Content serialization, native State and undo/redo/pending state",
+    "example": {
+      "kind": "nightfall.sketch-feedback.v1",
+      "document": "Nightfall",
+      "object": "Sketch",
+      "label": "Sketch (XY)",
+      "status": "underconstrained",
+      "degrees_of_freedom": 2,
+      "geometry_count": 1,
+      "cached_degrees_of_freedom": 2,
+      "constraint_count": 1,
+      "constraints": {
+        "numbering": "one_based",
+        "conflicting": [],
+        "redundant": [],
+        "partially_redundant": [],
+        "malformed": []
+      },
+      "diagnostics_freshness": "reported_up_to_date",
+      "native_state": [
+        "Up-to-date"
+      ],
+      "transaction_pending": false,
+      "freecad_version": [
+        "1",
+        "1",
+        "4",
+        "20260928 (Git shallow)",
+        "Unknown",
+        "2026/09/28 13:46:34",
+        "(HEAD detached at 4fd3bf320)",
+        "4fd3bf320d9566a27e60069fc8387448aaa3a094"
+      ],
+      "checked": [
+        "cached_native_solver_diagnostics"
+      ],
+      "unchecked": [
+        "geometric_intent",
+        "profile_closure",
+        "manufacturing_readiness"
+      ]
+    },
+    "editing_capture": {
+      "sketch": {
+        "kind": "nightfall.sketch-feedback.v1",
+        "document": "Nightfall",
+        "object": "Sketch",
+        "label": "Sketch (XY)",
+        "status": "needs_recompute",
+        "degrees_of_freedom": null,
+        "geometry_count": 1,
+        "cached_degrees_of_freedom": 2,
+        "constraint_count": 1,
+        "constraints": {
+          "numbering": "one_based",
+          "conflicting": [],
+          "redundant": [],
+          "partially_redundant": [],
+          "malformed": []
+        },
+        "diagnostics_freshness": "unverified",
+        "native_state": [
+          "Touched"
+        ],
+        "transaction_pending": false,
+        "freecad_version": [
+          "1",
+          "1",
+          "4",
+          "20260928 (Git shallow)",
+          "Unknown",
+          "2026/09/28 13:46:34",
+          "(HEAD detached at 4fd3bf320)",
+          "4fd3bf320d9566a27e60069fc8387448aaa3a094"
+        ],
+        "checked": [],
+        "unchecked": [
+          "geometric_intent",
+          "profile_closure",
+          "manufacturing_readiness"
+        ]
+      },
+      "enabled_actions": {
+        "freedoms": true,
+        "dimension": true,
+        "review": false
+      }
+    },
+    "pointer_placement_preview_checked": false,
+    "keyboard_input_bridge_checked": false
+  },
+  "tolerances": {
+    "origin_placement_mm_and_rotation_vector_components": 1e-12,
+    "circle_circumference_mm": 1e-09,
+    "proposed_line_length_mm": 1e-09
+  },
+  "known_failures": [
+    {
+      "issue": "https://github.com/wckdboy/nightfall-freecad/issues/2",
+      "scope": "Two interactive macOS accessibility sessions crashed in Qt Cocoa ownership/accessibility code; baseline cause/fix unverified."
+    },
+    {
+      "issue": "https://github.com/wckdboy/nightfall-freecad/issues/5",
+      "scope": "Development Qt viewport wrapper/event fixtures crashed in Shiboken during shutdown. The final fixture uses native Coin events and exits cleanly; underlying cause and product fix unverified."
+    }
+  ],
+  "unchecked": [
+    "Dimension placement/value acceptance and apply/undo through pointer input",
+    "Qt keyboard input bridge",
+    "Full FreeCAD C++ build and complete upstream suite",
+    "General persistent naming",
+    "AI tool transport/provider integration",
+    "Assembly integration/DOF/collision",
+    "PCB/KiCad and Rendering add-ons",
+    "Simulation and CFD",
+    "Industrial parity"
+  ],
+  "measurement_context": "Single local observations on an uncontrolled macOS 27.2 arm64 host. Process times include startup/shutdown; no interactive SLA is inferred.",
+  "artifacts": [
+    {
+      "path": "nightfall/evidence/guided-sketch-actions/gui-tests.json",
+      "bytes": 4181,
+      "sha256": "d64fd01bc7a0c8eb9919ccb92f997e8c0e14db013504cb3ded94f8bfeaa6b305"
+    },
+    {
+      "path": "nightfall/evidence/guided-sketch-actions/native-tests.json",
+      "bytes": 451,
+      "sha256": "d42488158d7c75b5bc5cf75449b1ca77222a4d67b4781e89f5a652a8bb2e3a0b"
+    },
+    {
+      "path": "nightfall/evidence/guided-sketch-actions/sketch-panel.png",
+      "bytes": 300643,
+      "sha256": "c7c1a2a11701ca4574aad3a1fae720b994b4a883f59f8e95013a2f9e9767d7bd"
+    },
+    {
+      "path": "nightfall/evidence/guided-sketch-actions/sketch-study.FCStd",
+      "bytes": 7726,
+      "sha256": "955c265d5df067909476a6dcdcd02c41b39e49d8eea812e2eab76211ad5d0d1f"
+    },
+    {
+      "path": "nightfall/evidence/guided-sketch-actions/sketch-viewport.png",
+      "bytes": 8885,
+      "sha256": "9b656225a045dd3b56be7bc30dcfdcf0b682c8ce56086aba2c5df8cbaddac925"
+    }
+  ]
+}

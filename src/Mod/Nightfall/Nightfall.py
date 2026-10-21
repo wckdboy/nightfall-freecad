@@ -46,6 +46,7 @@ def inspect_sketch(sketch):
         "constraints": constraints,
         "diagnostics_freshness": "unverified" if pending else "reported_up_to_date",
         "native_state": list(sketch.State),
+        "transaction_pending": bool(sketch.Document.HasPendingTransaction),
         "freecad_version": list(App.Version()),
         "checked": [] if pending else ["cached_native_solver_diagnostics"],
         "unchecked": ["geometric_intent", "profile_closure", "manufacturing_readiness"],
