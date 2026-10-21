@@ -1,0 +1,1105 @@
+{
+  "kind": "nightfall-viewport-lifetime-evidence",
+  "version": 1,
+  "base_commit": "12a926ef3c7066fc4201211c367942e9027c43f9",
+  "issue": "https://github.com/wckdboy/nightfall-freecad/issues/5",
+  "upstream": {
+    "release": "1.1.4",
+    "commit": "4fd3bf320d9566a27e60069fc8387448aaa3a094",
+    "release_asset_sha256": "071343b4abb70492b75c973f41eaf1d2528f9b9c7ea018d22a4f46ae14d27ac0",
+    "runtime": "official macOS arm64 bundle loading fork Python files; C++ application not rebuilt"
+  },
+  "runtime_sha256": {
+    "Contents/MacOS/FreeCAD": "a535464ece9a6175a3b15f385b35818402007eb3a8853384dacd65f128b50b1e",
+    "Contents/Resources/bin/freecad": "a51b76e19c13df9a8f20263df3029e9e0886a981dc67cb19b81e0956a26b865f",
+    "Contents/Resources/lib/libFreeCADApp.dylib": "84384e2b51acb43c795706bebf242d746619e9dda3da9c7eaf0feb88e0b48dc1",
+    "Contents/Resources/lib/libFreeCADGui.dylib": "8a63c7f9d8682451daba6c586d39ea665ca4281af63bba13026ff6560fe1b268",
+    "Contents/Resources/lib/libQt6Core.6.8.3.dylib": "571c6f83d19f1d98a9bf9ac8aa6832632cbac4a120f3c9ad8367b40a673259c9",
+    "Contents/Resources/lib/libshiboken6.cpython-311-darwin.6.8.3.dylib": "df0018bd1ec94f59e26599acb60345107b87a471d7c05209083e532bfee3ed86"
+  },
+  "source_sha256": {
+    "nightfall/tests/ViewportLifetime.FCMacro": "b03f06bcc4b227ef4784083495e8cc96f1996525f57eaf0ae808c7c45c99df94",
+    "nightfall/tools/run_viewport_lifetime.py": "8c6b8132aa83af957fcdcf4e88c14ec0d08b316e1290ee530bab1602e464d494",
+    "src/Mod/Nightfall/CMakeLists.txt": "3779780e7bdb5e77770ca8cd810e5437dd409ecac073e70ba0c6fe2b73d65c89",
+    "src/Mod/Nightfall/NightfallGui.py": "f97deef4cda41037766f01a7093960e4b8b748a368b9614eb8207b0b3ef3ffe5",
+    "src/Mod/Nightfall/InitGui.py": "88d730fb3781fe3ba681080e4e5de651e6a17b4ddd0644cd87f000b11f97b8f5",
+    "src/Mod/Nightfall/TestNightfallGui.py": "af2dcb701bab861b0051bd0ab5c46fe7fce7b15754f2958ac2e3455814a540d0",
+    "src/Mod/Nightfall/TestNightfallActions.py": "64b24ddd890a65acb3136b957e11e2c8e289b05eea0f8df7c37497ae1dd8d246",
+    "src/Mod/Nightfall/TestNightfall.py": "643958281dbc5440542f1a438654a9a80a0993fd39da347c94205b090eadc10b",
+    "src/Mod/Nightfall/Nightfall.py": "ef590de45d61a2483681cef667414a15242797840b350f1396f051aeee5667dc",
+    "src/Mod/Nightfall/Init.py": "75aa4544726c42c196578423451a36498e2e7407efdf55f2d869b26aadfabc0d",
+    "src/Mod/Nightfall/RunTests.py": "4b67f8d24f245284b0f050a29e2fcb6dd1d5442049238a953867def1c78076af",
+    "src/Mod/Nightfall/RunGuiTests.FCMacro": "375ec5d127b9567a0bcacf3a26d5d03168e6d417ddc3bea4baa28dfb2d387e06"
+  },
+  "study": {
+    "status": "intermittent_unmodified_runtime_failure_reproduced; no product fix",
+    "scope": "Official macOS arm64 GUI runtime; native saved box; Nightfall absent; no accessibility query",
+    "control_oracle": {
+      "quantity": "Box.Shape.Volume",
+      "expected": 1000,
+      "tolerance": 1e-09,
+      "unit": "mm^3"
+    },
+    "qt_pyside_shiboken_version": "6.8.3",
+    "aggregates": [
+      {
+        "case": "control",
+        "close": "document",
+        "release_wrapper": false,
+        "invalidate_before_close": false,
+        "invalidate_on_destroy": false,
+        "quit_delay_ms": 300,
+        "trials": 1,
+        "clean_exits": 1,
+        "sigsegv": 0,
+        "timeouts": 0
+      },
+      {
+        "case": "control",
+        "close": "quit",
+        "release_wrapper": false,
+        "invalidate_before_close": false,
+        "invalidate_on_destroy": false,
+        "quit_delay_ms": 300,
+        "trials": 1,
+        "clean_exits": 1,
+        "sigsegv": 0,
+        "timeouts": 0
+      },
+      {
+        "case": "control",
+        "close": "window",
+        "release_wrapper": false,
+        "invalidate_before_close": false,
+        "invalidate_on_destroy": false,
+        "quit_delay_ms": 300,
+        "trials": 1,
+        "clean_exits": 1,
+        "sigsegv": 0,
+        "timeouts": 0
+      },
+      {
+        "case": "wrap",
+        "close": "document",
+        "release_wrapper": false,
+        "invalidate_before_close": false,
+        "invalidate_on_destroy": false,
+        "quit_delay_ms": 0,
+        "trials": 1,
+        "clean_exits": 0,
+        "sigsegv": 1,
+        "timeouts": 0
+      },
+      {
+        "case": "wrap",
+        "close": "document",
+        "release_wrapper": false,
+        "invalidate_before_close": false,
+        "invalidate_on_destroy": false,
+        "quit_delay_ms": 300,
+        "trials": 5,
+        "clean_exits": 1,
+        "sigsegv": 4,
+        "timeouts": 0
+      },
+      {
+        "case": "wrap",
+        "close": "document",
+        "release_wrapper": false,
+        "invalidate_before_close": false,
+        "invalidate_on_destroy": true,
+        "quit_delay_ms": 300,
+        "trials": 3,
+        "clean_exits": 3,
+        "sigsegv": 0,
+        "timeouts": 0
+      },
+      {
+        "case": "wrap",
+        "close": "document",
+        "release_wrapper": false,
+        "invalidate_before_close": true,
+        "invalidate_on_destroy": false,
+        "quit_delay_ms": 300,
+        "trials": 1,
+        "clean_exits": 1,
+        "sigsegv": 0,
+        "timeouts": 0
+      },
+      {
+        "case": "wrap",
+        "close": "document",
+        "release_wrapper": true,
+        "invalidate_before_close": false,
+        "invalidate_on_destroy": false,
+        "quit_delay_ms": 300,
+        "trials": 1,
+        "clean_exits": 1,
+        "sigsegv": 0,
+        "timeouts": 0
+      },
+      {
+        "case": "wrap",
+        "close": "quit",
+        "release_wrapper": false,
+        "invalidate_before_close": false,
+        "invalidate_on_destroy": false,
+        "quit_delay_ms": 300,
+        "trials": 1,
+        "clean_exits": 1,
+        "sigsegv": 0,
+        "timeouts": 0
+      },
+      {
+        "case": "wrap",
+        "close": "window",
+        "release_wrapper": false,
+        "invalidate_before_close": false,
+        "invalidate_on_destroy": false,
+        "quit_delay_ms": 300,
+        "trials": 1,
+        "clean_exits": 1,
+        "sigsegv": 0,
+        "timeouts": 0
+      }
+    ],
+    "runs": [
+      {
+        "case": "wrap",
+        "close": "document",
+        "release_wrapper": false,
+        "invalidate_before_close": false,
+        "invalidate_on_destroy": false,
+        "quit_delay_ms": 300,
+        "returncode": -11,
+        "timeout": false,
+        "elapsed_seconds": 4.150396749988431,
+        "passed": false,
+        "id": "viewport-0620417d2d8e4974b2b21bab7af521ea",
+        "source_input_sha256": {
+          "ViewportLifetime.FCMacro": "b03f06bcc4b227ef4784083495e8cc96f1996525f57eaf0ae808c7c45c99df94",
+          "run_viewport_lifetime.py": "8c6b8132aa83af957fcdcf4e88c14ec0d08b316e1290ee530bab1602e464d494"
+        },
+        "report_sha256": "51c395296be3b09e718c212ee12ba21c0b4ae4dd9fa185cfd59fbb4c428203bb",
+        "native_wrapper": {
+          "class": "Gui::View3DInventorViewer",
+          "valid": true,
+          "owned_by_python": false,
+          "created_by_python": false
+        },
+        "wrapper_valid_after_document_close": [
+          true
+        ],
+        "wrapper_valid_before_quit": [
+          false
+        ],
+        "destroy_hook_called": false,
+        "crash": {
+          "signal": "SIGSEGV",
+          "frames": [
+            "Shiboken::Object::recursive_invalidate(SbkObject*, std::__1::set<SbkObject*, std::__1::less<SbkObject*>, std::__1::allocator<SbkObject*>>&)",
+            "Shiboken::Object::recursive_invalidate(_object*, std::__1::set<SbkObject*, std::__1::less<SbkObject*>, std::__1::allocator<SbkObject*>>&)",
+            "Shiboken::Object::recursive_invalidate(SbkObject*, std::__1::set<SbkObject*, std::__1::less<SbkObject*>, std::__1::allocator<SbkObject*>>&)",
+            "(anonymous namespace)::_destroyParentInfo(SbkObject*, bool)",
+            "Shiboken::Object::destroy(SbkObject*, void*)",
+            "Shiboken::BindingManager::~BindingManager()",
+            "__cxa_finalize_ranges",
+            "exit",
+            "-[NSApplication terminate:]",
+            "-[NSApplication _terminateFromSender:askIfShouldTerminate:saveWindows:]"
+          ],
+          "raw_sha256": "348371622cb05629f211058e22fc8461bfe0a44e42da7365478bfdb48cdca0ee"
+        }
+      },
+      {
+        "case": "wrap",
+        "close": "document",
+        "release_wrapper": false,
+        "invalidate_before_close": false,
+        "invalidate_on_destroy": false,
+        "quit_delay_ms": 0,
+        "returncode": -11,
+        "timeout": false,
+        "elapsed_seconds": 4.146672250004485,
+        "passed": false,
+        "id": "viewport-0a23a5818c4644aa90a9d038f8526743",
+        "source_input_sha256": {
+          "ViewportLifetime.FCMacro": "b03f06bcc4b227ef4784083495e8cc96f1996525f57eaf0ae808c7c45c99df94",
+          "run_viewport_lifetime.py": "8c6b8132aa83af957fcdcf4e88c14ec0d08b316e1290ee530bab1602e464d494"
+        },
+        "report_sha256": "fe7e5908b6fb8d152f430299da2ec9a3c2e804df55058c90990eeb160f0504ef",
+        "native_wrapper": {
+          "class": "Gui::View3DInventorViewer",
+          "valid": true,
+          "owned_by_python": false,
+          "created_by_python": false
+        },
+        "wrapper_valid_after_document_close": [
+          true
+        ],
+        "wrapper_valid_before_quit": [
+          true
+        ],
+        "destroy_hook_called": false,
+        "crash": {
+          "signal": "SIGSEGV",
+          "frames": [
+            "Shiboken::Object::recursive_invalidate(SbkObject*, std::__1::set<SbkObject*, std::__1::less<SbkObject*>, std::__1::allocator<SbkObject*>>&)",
+            "Shiboken::Object::recursive_invalidate(_object*, std::__1::set<SbkObject*, std::__1::less<SbkObject*>, std::__1::allocator<SbkObject*>>&)",
+            "Shiboken::Object::recursive_invalidate(SbkObject*, std::__1::set<SbkObject*, std::__1::less<SbkObject*>, std::__1::allocator<SbkObject*>>&)",
+            "(anonymous namespace)::_destroyParentInfo(SbkObject*, bool)",
+            "Shiboken::Object::destroy(SbkObject*, void*)",
+            "Shiboken::BindingManager::~BindingManager()",
+            "__cxa_finalize_ranges",
+            "exit",
+            "-[NSApplication terminate:]",
+            "-[NSApplication _terminateFromSender:askIfShouldTerminate:saveWindows:]"
+          ],
+          "raw_sha256": "5fc974d4fffa2bccd69b001f58a99b2632cd37d8d499b8d67b7b684e685bf514"
+        }
+      },
+      {
+        "case": "wrap",
+        "close": "document",
+        "release_wrapper": false,
+        "invalidate_before_close": true,
+        "invalidate_on_destroy": false,
+        "quit_delay_ms": 300,
+        "returncode": 0,
+        "timeout": false,
+        "elapsed_seconds": 3.9144299579929793,
+        "passed": true,
+        "id": "viewport-17859c335f6a4ed4a4554dd5bcb70e56",
+        "source_input_sha256": {
+          "ViewportLifetime.FCMacro": "b03f06bcc4b227ef4784083495e8cc96f1996525f57eaf0ae808c7c45c99df94",
+          "run_viewport_lifetime.py": "8c6b8132aa83af957fcdcf4e88c14ec0d08b316e1290ee530bab1602e464d494"
+        },
+        "report_sha256": "e62178334fe1ef48cc3e8b21298f188d984e10e94f6b18f13253bbe070aad053",
+        "native_wrapper": {
+          "class": "Gui::View3DInventorViewer",
+          "valid": true,
+          "owned_by_python": false,
+          "created_by_python": false
+        },
+        "wrapper_valid_after_document_close": [
+          false
+        ],
+        "wrapper_valid_before_quit": [
+          false
+        ],
+        "destroy_hook_called": false
+      },
+      {
+        "case": "wrap",
+        "close": "window",
+        "release_wrapper": false,
+        "invalidate_before_close": false,
+        "invalidate_on_destroy": false,
+        "quit_delay_ms": 300,
+        "returncode": 0,
+        "timeout": false,
+        "elapsed_seconds": 4.32129837499815,
+        "passed": true,
+        "id": "viewport-22d95eb2f13b4212979ce15f6ace0662",
+        "source_input_sha256": {
+          "ViewportLifetime.FCMacro": "b03f06bcc4b227ef4784083495e8cc96f1996525f57eaf0ae808c7c45c99df94",
+          "run_viewport_lifetime.py": "8c6b8132aa83af957fcdcf4e88c14ec0d08b316e1290ee530bab1602e464d494"
+        },
+        "report_sha256": "b0db37859893a226a6a1aa63e592d5365b44d73249d4607b5763380d69a23b08",
+        "native_wrapper": {
+          "class": "Gui::View3DInventorViewer",
+          "valid": true,
+          "owned_by_python": false,
+          "created_by_python": false
+        },
+        "wrapper_valid_after_document_close": null,
+        "wrapper_valid_before_quit": null,
+        "destroy_hook_called": false
+      },
+      {
+        "case": "wrap",
+        "close": "document",
+        "release_wrapper": true,
+        "invalidate_before_close": false,
+        "invalidate_on_destroy": false,
+        "quit_delay_ms": 300,
+        "returncode": 0,
+        "timeout": false,
+        "elapsed_seconds": 4.528392125008395,
+        "passed": true,
+        "id": "viewport-2698916256c146b8a899533a22835e26",
+        "source_input_sha256": {
+          "ViewportLifetime.FCMacro": "b03f06bcc4b227ef4784083495e8cc96f1996525f57eaf0ae808c7c45c99df94",
+          "run_viewport_lifetime.py": "8c6b8132aa83af957fcdcf4e88c14ec0d08b316e1290ee530bab1602e464d494"
+        },
+        "report_sha256": "61e12adbd33e52e5d48ef13bc484e5ae81be479f6a411ffbc59374f9a81a11fd",
+        "native_wrapper": {
+          "class": "Gui::View3DInventorViewer",
+          "valid": true,
+          "owned_by_python": false,
+          "created_by_python": false
+        },
+        "wrapper_valid_after_document_close": [],
+        "wrapper_valid_before_quit": [],
+        "destroy_hook_called": false
+      },
+      {
+        "case": "control",
+        "close": "quit",
+        "release_wrapper": false,
+        "invalidate_before_close": false,
+        "invalidate_on_destroy": false,
+        "quit_delay_ms": 300,
+        "returncode": 0,
+        "timeout": false,
+        "elapsed_seconds": 4.350384124991251,
+        "passed": true,
+        "id": "viewport-26d9beac6b3d4d18b70b2325c76c2d06",
+        "source_input_sha256": {
+          "ViewportLifetime.FCMacro": "b03f06bcc4b227ef4784083495e8cc96f1996525f57eaf0ae808c7c45c99df94",
+          "run_viewport_lifetime.py": "8c6b8132aa83af957fcdcf4e88c14ec0d08b316e1290ee530bab1602e464d494"
+        },
+        "report_sha256": "f9bbcf3aa371eda47cd65c08df7b2b76494bcdda6a94b920b93e6f254defa22d",
+        "native_wrapper": null,
+        "wrapper_valid_after_document_close": null,
+        "wrapper_valid_before_quit": [],
+        "destroy_hook_called": false
+      },
+      {
+        "case": "control",
+        "close": "window",
+        "release_wrapper": false,
+        "invalidate_before_close": false,
+        "invalidate_on_destroy": false,
+        "quit_delay_ms": 300,
+        "returncode": 0,
+        "timeout": false,
+        "elapsed_seconds": 4.245891500002472,
+        "passed": true,
+        "id": "viewport-46131ab510184c1c99ada286925945b1",
+        "source_input_sha256": {
+          "ViewportLifetime.FCMacro": "b03f06bcc4b227ef4784083495e8cc96f1996525f57eaf0ae808c7c45c99df94",
+          "run_viewport_lifetime.py": "8c6b8132aa83af957fcdcf4e88c14ec0d08b316e1290ee530bab1602e464d494"
+        },
+        "report_sha256": "1cb0e15bd8e12639cb3fcb158be822e36641fabcdbdf59409346e7f7bc0af69c",
+        "native_wrapper": null,
+        "wrapper_valid_after_document_close": null,
+        "wrapper_valid_before_quit": null,
+        "destroy_hook_called": false
+      },
+      {
+        "case": "wrap",
+        "close": "quit",
+        "release_wrapper": false,
+        "invalidate_before_close": false,
+        "invalidate_on_destroy": false,
+        "quit_delay_ms": 300,
+        "returncode": 0,
+        "timeout": false,
+        "elapsed_seconds": 4.36067470900889,
+        "passed": true,
+        "id": "viewport-4ddca77277ca4f03816a3e684cd8e2bd",
+        "source_input_sha256": {
+          "ViewportLifetime.FCMacro": "b03f06bcc4b227ef4784083495e8cc96f1996525f57eaf0ae808c7c45c99df94",
+          "run_viewport_lifetime.py": "8c6b8132aa83af957fcdcf4e88c14ec0d08b316e1290ee530bab1602e464d494"
+        },
+        "report_sha256": "e18266f49bf3a12d8b748b55b1d8271550bbcfaebd650f9586ea6c848511a794",
+        "native_wrapper": {
+          "class": "Gui::View3DInventorViewer",
+          "valid": true,
+          "owned_by_python": false,
+          "created_by_python": false
+        },
+        "wrapper_valid_after_document_close": null,
+        "wrapper_valid_before_quit": [
+          true
+        ],
+        "destroy_hook_called": false
+      },
+      {
+        "case": "wrap",
+        "close": "document",
+        "release_wrapper": false,
+        "invalidate_before_close": false,
+        "invalidate_on_destroy": true,
+        "quit_delay_ms": 300,
+        "returncode": 0,
+        "timeout": false,
+        "elapsed_seconds": 4.22112095799821,
+        "passed": true,
+        "id": "viewport-671f371c280048e3ae22312587763226",
+        "source_input_sha256": {
+          "ViewportLifetime.FCMacro": "b03f06bcc4b227ef4784083495e8cc96f1996525f57eaf0ae808c7c45c99df94",
+          "run_viewport_lifetime.py": "8c6b8132aa83af957fcdcf4e88c14ec0d08b316e1290ee530bab1602e464d494"
+        },
+        "report_sha256": "f6c374b1c65757f2c5e24638707f886d249165926a7de47503e7f5c06653fd5b",
+        "native_wrapper": {
+          "class": "Gui::View3DInventorViewer",
+          "valid": true,
+          "owned_by_python": false,
+          "created_by_python": false
+        },
+        "wrapper_valid_after_document_close": [
+          true
+        ],
+        "wrapper_valid_before_quit": [
+          false
+        ],
+        "destroy_hook_called": true
+      },
+      {
+        "case": "wrap",
+        "close": "document",
+        "release_wrapper": false,
+        "invalidate_before_close": false,
+        "invalidate_on_destroy": false,
+        "quit_delay_ms": 300,
+        "returncode": -11,
+        "timeout": false,
+        "elapsed_seconds": 4.217854125003214,
+        "passed": false,
+        "id": "viewport-6e9d54070cdc452ab56148cc6bfa6528",
+        "source_input_sha256": {
+          "ViewportLifetime.FCMacro": "b03f06bcc4b227ef4784083495e8cc96f1996525f57eaf0ae808c7c45c99df94",
+          "run_viewport_lifetime.py": "8c6b8132aa83af957fcdcf4e88c14ec0d08b316e1290ee530bab1602e464d494"
+        },
+        "report_sha256": "51c395296be3b09e718c212ee12ba21c0b4ae4dd9fa185cfd59fbb4c428203bb",
+        "native_wrapper": {
+          "class": "Gui::View3DInventorViewer",
+          "valid": true,
+          "owned_by_python": false,
+          "created_by_python": false
+        },
+        "wrapper_valid_after_document_close": [
+          true
+        ],
+        "wrapper_valid_before_quit": [
+          false
+        ],
+        "destroy_hook_called": false,
+        "crash": {
+          "signal": "SIGSEGV",
+          "frames": [
+            "Shiboken::Object::recursive_invalidate(SbkObject*, std::__1::set<SbkObject*, std::__1::less<SbkObject*>, std::__1::allocator<SbkObject*>>&)",
+            "Shiboken::Object::recursive_invalidate(_object*, std::__1::set<SbkObject*, std::__1::less<SbkObject*>, std::__1::allocator<SbkObject*>>&)",
+            "Shiboken::Object::recursive_invalidate(SbkObject*, std::__1::set<SbkObject*, std::__1::less<SbkObject*>, std::__1::allocator<SbkObject*>>&)",
+            "(anonymous namespace)::_destroyParentInfo(SbkObject*, bool)",
+            "Shiboken::Object::destroy(SbkObject*, void*)",
+            "Shiboken::BindingManager::~BindingManager()",
+            "__cxa_finalize_ranges",
+            "exit",
+            "-[NSApplication terminate:]",
+            "-[NSApplication _terminateFromSender:askIfShouldTerminate:saveWindows:]"
+          ],
+          "raw_sha256": "b72d914a894277b3fd58e892ee989ce152b4d4c4447ce3a899f71f510c78be3b"
+        }
+      },
+      {
+        "case": "control",
+        "close": "document",
+        "release_wrapper": false,
+        "invalidate_before_close": false,
+        "invalidate_on_destroy": false,
+        "quit_delay_ms": 300,
+        "returncode": 0,
+        "timeout": false,
+        "elapsed_seconds": 4.488751208002213,
+        "passed": true,
+        "id": "viewport-86f757c7115e4196bba20f9014e6300b",
+        "source_input_sha256": {
+          "ViewportLifetime.FCMacro": "b03f06bcc4b227ef4784083495e8cc96f1996525f57eaf0ae808c7c45c99df94",
+          "run_viewport_lifetime.py": "8c6b8132aa83af957fcdcf4e88c14ec0d08b316e1290ee530bab1602e464d494"
+        },
+        "report_sha256": "ea6ef7879281599d74a467f7027e914f6a58da8959b02edbf514ae4edb1b5ce8",
+        "native_wrapper": null,
+        "wrapper_valid_after_document_close": [],
+        "wrapper_valid_before_quit": [],
+        "destroy_hook_called": false
+      },
+      {
+        "case": "wrap",
+        "close": "document",
+        "release_wrapper": false,
+        "invalidate_before_close": false,
+        "invalidate_on_destroy": false,
+        "quit_delay_ms": 300,
+        "returncode": 0,
+        "timeout": false,
+        "elapsed_seconds": 4.418544708998525,
+        "passed": true,
+        "id": "viewport-a962cc7ef80a4de2af0f2ead2905ed7e",
+        "source_input_sha256": {
+          "ViewportLifetime.FCMacro": "b03f06bcc4b227ef4784083495e8cc96f1996525f57eaf0ae808c7c45c99df94",
+          "run_viewport_lifetime.py": "8c6b8132aa83af957fcdcf4e88c14ec0d08b316e1290ee530bab1602e464d494"
+        },
+        "report_sha256": "51c395296be3b09e718c212ee12ba21c0b4ae4dd9fa185cfd59fbb4c428203bb",
+        "native_wrapper": {
+          "class": "Gui::View3DInventorViewer",
+          "valid": true,
+          "owned_by_python": false,
+          "created_by_python": false
+        },
+        "wrapper_valid_after_document_close": [
+          true
+        ],
+        "wrapper_valid_before_quit": [
+          false
+        ],
+        "destroy_hook_called": false
+      },
+      {
+        "case": "wrap",
+        "close": "document",
+        "release_wrapper": false,
+        "invalidate_before_close": false,
+        "invalidate_on_destroy": true,
+        "quit_delay_ms": 300,
+        "returncode": 0,
+        "timeout": false,
+        "elapsed_seconds": 3.967923125004745,
+        "passed": true,
+        "id": "viewport-c7953e44a8be4f38ad90626d8af477cb",
+        "source_input_sha256": {
+          "ViewportLifetime.FCMacro": "b03f06bcc4b227ef4784083495e8cc96f1996525f57eaf0ae808c7c45c99df94",
+          "run_viewport_lifetime.py": "8c6b8132aa83af957fcdcf4e88c14ec0d08b316e1290ee530bab1602e464d494"
+        },
+        "report_sha256": "f6c374b1c65757f2c5e24638707f886d249165926a7de47503e7f5c06653fd5b",
+        "native_wrapper": {
+          "class": "Gui::View3DInventorViewer",
+          "valid": true,
+          "owned_by_python": false,
+          "created_by_python": false
+        },
+        "wrapper_valid_after_document_close": [
+          true
+        ],
+        "wrapper_valid_before_quit": [
+          false
+        ],
+        "destroy_hook_called": true
+      },
+      {
+        "case": "wrap",
+        "close": "document",
+        "release_wrapper": false,
+        "invalidate_before_close": false,
+        "invalidate_on_destroy": false,
+        "quit_delay_ms": 300,
+        "returncode": -11,
+        "timeout": false,
+        "elapsed_seconds": 4.024056541005848,
+        "passed": false,
+        "id": "viewport-e324aaca625d40e5ba333d05a080cc36",
+        "source_input_sha256": {
+          "ViewportLifetime.FCMacro": "b03f06bcc4b227ef4784083495e8cc96f1996525f57eaf0ae808c7c45c99df94",
+          "run_viewport_lifetime.py": "8c6b8132aa83af957fcdcf4e88c14ec0d08b316e1290ee530bab1602e464d494"
+        },
+        "report_sha256": "51c395296be3b09e718c212ee12ba21c0b4ae4dd9fa185cfd59fbb4c428203bb",
+        "native_wrapper": {
+          "class": "Gui::View3DInventorViewer",
+          "valid": true,
+          "owned_by_python": false,
+          "created_by_python": false
+        },
+        "wrapper_valid_after_document_close": [
+          true
+        ],
+        "wrapper_valid_before_quit": [
+          false
+        ],
+        "destroy_hook_called": false,
+        "crash": {
+          "signal": "SIGSEGV",
+          "frames": [
+            "Shiboken::Object::recursive_invalidate(SbkObject*, std::__1::set<SbkObject*, std::__1::less<SbkObject*>, std::__1::allocator<SbkObject*>>&)",
+            "Shiboken::Object::recursive_invalidate(_object*, std::__1::set<SbkObject*, std::__1::less<SbkObject*>, std::__1::allocator<SbkObject*>>&)",
+            "Shiboken::Object::recursive_invalidate(SbkObject*, std::__1::set<SbkObject*, std::__1::less<SbkObject*>, std::__1::allocator<SbkObject*>>&)",
+            "(anonymous namespace)::_destroyParentInfo(SbkObject*, bool)",
+            "Shiboken::Object::destroy(SbkObject*, void*)",
+            "Shiboken::BindingManager::~BindingManager()",
+            "__cxa_finalize_ranges",
+            "exit",
+            "-[NSApplication terminate:]",
+            "-[NSApplication _terminateFromSender:askIfShouldTerminate:saveWindows:]"
+          ],
+          "raw_sha256": "76e02797f39126fd6f3f3133df08b99cf2b3be72107d3f9bc5a15a030585a933"
+        }
+      },
+      {
+        "case": "wrap",
+        "close": "document",
+        "release_wrapper": false,
+        "invalidate_before_close": false,
+        "invalidate_on_destroy": false,
+        "quit_delay_ms": 300,
+        "returncode": -11,
+        "timeout": false,
+        "elapsed_seconds": 3.9748101250006584,
+        "passed": false,
+        "id": "viewport-eeaf18103dff496f9d7192b7b83e4896",
+        "source_input_sha256": {
+          "ViewportLifetime.FCMacro": "b03f06bcc4b227ef4784083495e8cc96f1996525f57eaf0ae808c7c45c99df94",
+          "run_viewport_lifetime.py": "8c6b8132aa83af957fcdcf4e88c14ec0d08b316e1290ee530bab1602e464d494"
+        },
+        "report_sha256": "51c395296be3b09e718c212ee12ba21c0b4ae4dd9fa185cfd59fbb4c428203bb",
+        "native_wrapper": {
+          "class": "Gui::View3DInventorViewer",
+          "valid": true,
+          "owned_by_python": false,
+          "created_by_python": false
+        },
+        "wrapper_valid_after_document_close": [
+          true
+        ],
+        "wrapper_valid_before_quit": [
+          false
+        ],
+        "destroy_hook_called": false,
+        "crash": {
+          "signal": "SIGSEGV",
+          "frames": [
+            "Shiboken::Object::recursive_invalidate(SbkObject*, std::__1::set<SbkObject*, std::__1::less<SbkObject*>, std::__1::allocator<SbkObject*>>&)",
+            "Shiboken::Object::recursive_invalidate(_object*, std::__1::set<SbkObject*, std::__1::less<SbkObject*>, std::__1::allocator<SbkObject*>>&)",
+            "Shiboken::Object::recursive_invalidate(SbkObject*, std::__1::set<SbkObject*, std::__1::less<SbkObject*>, std::__1::allocator<SbkObject*>>&)",
+            "(anonymous namespace)::_destroyParentInfo(SbkObject*, bool)",
+            "Shiboken::Object::destroy(SbkObject*, void*)",
+            "Shiboken::BindingManager::~BindingManager()",
+            "__cxa_finalize_ranges",
+            "exit",
+            "-[NSApplication terminate:]",
+            "-[NSApplication _terminateFromSender:askIfShouldTerminate:saveWindows:]"
+          ],
+          "raw_sha256": "fd02f282ff16ef197bcd1cfa31bf4b95d5da3e5e9239e58d4fded354ce4efa37"
+        }
+      },
+      {
+        "case": "wrap",
+        "close": "document",
+        "release_wrapper": false,
+        "invalidate_before_close": false,
+        "invalidate_on_destroy": true,
+        "quit_delay_ms": 300,
+        "returncode": 0,
+        "timeout": false,
+        "elapsed_seconds": 4.139054041996133,
+        "passed": true,
+        "id": "viewport-ef32f44746a94aa093276bba6ea13c6d",
+        "source_input_sha256": {
+          "ViewportLifetime.FCMacro": "b03f06bcc4b227ef4784083495e8cc96f1996525f57eaf0ae808c7c45c99df94",
+          "run_viewport_lifetime.py": "8c6b8132aa83af957fcdcf4e88c14ec0d08b316e1290ee530bab1602e464d494"
+        },
+        "report_sha256": "f6c374b1c65757f2c5e24638707f886d249165926a7de47503e7f5c06653fd5b",
+        "native_wrapper": {
+          "class": "Gui::View3DInventorViewer",
+          "valid": true,
+          "owned_by_python": false,
+          "created_by_python": false
+        },
+        "wrapper_valid_after_document_close": [
+          true
+        ],
+        "wrapper_valid_before_quit": [
+          false
+        ],
+        "destroy_hook_called": true
+      }
+    ],
+    "exploratory_runs": [
+      {
+        "case": "wrap",
+        "close": "document",
+        "release_wrapper": false,
+        "invalidate_before_close": false,
+        "invalidate_on_destroy": false,
+        "quit_delay_ms": 300,
+        "returncode": -11,
+        "timeout": false,
+        "elapsed_seconds": 4.597671374998754,
+        "passed": false,
+        "id": "viewport-087edb5d999f4466bd74b70194290aff",
+        "source_input_sha256": {
+          "ViewportLifetime.FCMacro": "227a9d53fc870d33bb677c2807b1f839b78d596714042b6c90d2763757f58aa3",
+          "run_viewport_lifetime.py": "8c6b8132aa83af957fcdcf4e88c14ec0d08b316e1290ee530bab1602e464d494"
+        },
+        "report_sha256": "a0e0953ef438a781f7aeb655168a3b38ea71eb8369b65203b05be1b48128ca77",
+        "scope": "Exploratory harness version; excluded from final comparisons. Earlier window-close timeouts did not record the blocking dialog and are not product-hang evidence."
+      },
+      {
+        "case": "wrap",
+        "close": "document",
+        "release_wrapper": false,
+        "invalidate_before_close": true,
+        "invalidate_on_destroy": null,
+        "quit_delay_ms": 300,
+        "returncode": 0,
+        "timeout": false,
+        "elapsed_seconds": 5.227423250005813,
+        "passed": true,
+        "id": "viewport-1aa8797bd6e24a038978dc73c1d8bc20",
+        "source_input_sha256": {
+          "ViewportLifetime.FCMacro": "16673c19806973c37cefb6db8eca8eea3b863641204c216e642ccc7fade94c2d",
+          "run_viewport_lifetime.py": "3ed3c3b618631fb83aad2740822d2e4747ac110bb7a02b1a0670ec54e390d57f"
+        },
+        "report_sha256": "327821cc84347738d216573d04beaf943bcfdc5fcc18bca319a098962cb563cb",
+        "scope": "Exploratory harness version; excluded from final comparisons. Earlier window-close timeouts did not record the blocking dialog and are not product-hang evidence."
+      },
+      {
+        "case": "control",
+        "close": "document",
+        "release_wrapper": false,
+        "invalidate_before_close": null,
+        "invalidate_on_destroy": null,
+        "quit_delay_ms": 300,
+        "returncode": 0,
+        "timeout": false,
+        "elapsed_seconds": 4.658742708998034,
+        "passed": true,
+        "id": "viewport-49391a27e87541b99d9ebc4a065ef0e2",
+        "source_input_sha256": {
+          "ViewportLifetime.FCMacro": "b42b8b98bd24ef15d9b05432bdf91548ed280946219fbc859cbe660064083395",
+          "run_viewport_lifetime.py": "bda6095cde005eae4a328a8d014a37950b9346d7cfadb310c79d033d21439e64"
+        },
+        "report_sha256": "49b0c426f4404a1f55d83d158e4f79975b78f4180b5d694b1260a519e8f5e52f",
+        "scope": "Exploratory harness version; excluded from final comparisons. Earlier window-close timeouts did not record the blocking dialog and are not product-hang evidence."
+      },
+      {
+        "case": "control",
+        "close": "window",
+        "release_wrapper": false,
+        "invalidate_before_close": null,
+        "invalidate_on_destroy": null,
+        "quit_delay_ms": 300,
+        "returncode": -15,
+        "timeout": true,
+        "elapsed_seconds": 120.04070637498808,
+        "passed": false,
+        "id": "viewport-568e719138784c14b3e50461a0111a61",
+        "source_input_sha256": {
+          "ViewportLifetime.FCMacro": "b42b8b98bd24ef15d9b05432bdf91548ed280946219fbc859cbe660064083395",
+          "run_viewport_lifetime.py": "bda6095cde005eae4a328a8d014a37950b9346d7cfadb310c79d033d21439e64"
+        },
+        "report_sha256": "e28639fad2fdeed9c0003f4774d8fd447fb92b49bbd276d1486b1d900bc51572",
+        "scope": "Exploratory harness version; excluded from final comparisons. Earlier window-close timeouts did not record the blocking dialog and are not product-hang evidence."
+      },
+      {
+        "case": "wrap",
+        "close": "document",
+        "release_wrapper": false,
+        "invalidate_before_close": null,
+        "invalidate_on_destroy": null,
+        "quit_delay_ms": 300,
+        "returncode": -11,
+        "timeout": false,
+        "elapsed_seconds": 4.362263875009376,
+        "passed": false,
+        "id": "viewport-582bf451f3c84773bd79cf63a093666a",
+        "source_input_sha256": {
+          "ViewportLifetime.FCMacro": "b42b8b98bd24ef15d9b05432bdf91548ed280946219fbc859cbe660064083395",
+          "run_viewport_lifetime.py": "bda6095cde005eae4a328a8d014a37950b9346d7cfadb310c79d033d21439e64"
+        },
+        "report_sha256": "23f0dca4ef5e31d012945ca2bcd722fba8c00f68e9926bc4b59010f875897344",
+        "scope": "Exploratory harness version; excluded from final comparisons. Earlier window-close timeouts did not record the blocking dialog and are not product-hang evidence."
+      },
+      {
+        "case": "wrap",
+        "close": "document",
+        "release_wrapper": false,
+        "invalidate_before_close": null,
+        "invalidate_on_destroy": null,
+        "quit_delay_ms": null,
+        "returncode": 0,
+        "timeout": false,
+        "elapsed_seconds": 3.9087518340093084,
+        "passed": true,
+        "id": "viewport-7e385e9c66fb4f1c8a56b21d0ecf769b",
+        "source_input_sha256": {
+          "ViewportLifetime.FCMacro": "dc5ec39c22cdad7950e24bf04bd7b382acb34f295e012790f01f48522c9121f0",
+          "run_viewport_lifetime.py": "15c9282a774afea555e3b903012c9dfe7ad5265bf423588083987f747cce7bf9"
+        },
+        "report_sha256": "092020fd8f47ad41055e253737124fedfafaca14cff6c94ac0b134223a3e7f06",
+        "scope": "Exploratory harness version; excluded from final comparisons. Earlier window-close timeouts did not record the blocking dialog and are not product-hang evidence."
+      },
+      {
+        "case": "qt_escape",
+        "close": "document",
+        "release_wrapper": false,
+        "invalidate_before_close": null,
+        "invalidate_on_destroy": null,
+        "quit_delay_ms": null,
+        "returncode": 0,
+        "timeout": false,
+        "elapsed_seconds": 4.2689233330020215,
+        "passed": true,
+        "id": "viewport-8000f9b3f26840719ff05c8167c0c54e",
+        "source_input_sha256": {
+          "ViewportLifetime.FCMacro": "dc5ec39c22cdad7950e24bf04bd7b382acb34f295e012790f01f48522c9121f0",
+          "run_viewport_lifetime.py": "15c9282a774afea555e3b903012c9dfe7ad5265bf423588083987f747cce7bf9"
+        },
+        "report_sha256": "353c403dcfdf49ce041cbf59ee53de9e7b8e27e2d370ed4a39a2c2756d0735f5",
+        "scope": "Exploratory harness version; excluded from final comparisons. Earlier window-close timeouts did not record the blocking dialog and are not product-hang evidence."
+      },
+      {
+        "case": "wrap",
+        "close": "document",
+        "release_wrapper": false,
+        "invalidate_before_close": false,
+        "invalidate_on_destroy": true,
+        "quit_delay_ms": 300,
+        "returncode": 0,
+        "timeout": false,
+        "elapsed_seconds": 4.4571873340028105,
+        "passed": true,
+        "id": "viewport-8a482164478b4f098de8a291816ed2fc",
+        "source_input_sha256": {
+          "ViewportLifetime.FCMacro": "227a9d53fc870d33bb677c2807b1f839b78d596714042b6c90d2763757f58aa3",
+          "run_viewport_lifetime.py": "8c6b8132aa83af957fcdcf4e88c14ec0d08b316e1290ee530bab1602e464d494"
+        },
+        "report_sha256": "3ca69bb40daa443246079430123e4f5abd466ae7d9b3ab7e36548fcdafcf107f",
+        "scope": "Exploratory harness version; excluded from final comparisons. Earlier window-close timeouts did not record the blocking dialog and are not product-hang evidence."
+      },
+      {
+        "case": "control",
+        "close": "document",
+        "release_wrapper": false,
+        "invalidate_before_close": null,
+        "invalidate_on_destroy": null,
+        "quit_delay_ms": null,
+        "returncode": 0,
+        "timeout": false,
+        "elapsed_seconds": 5.997453375006444,
+        "passed": true,
+        "id": "viewport-97dd6e2af23f447b83dbd2b3ecd724ca",
+        "source_input_sha256": {
+          "ViewportLifetime.FCMacro": "dc5ec39c22cdad7950e24bf04bd7b382acb34f295e012790f01f48522c9121f0",
+          "run_viewport_lifetime.py": "15c9282a774afea555e3b903012c9dfe7ad5265bf423588083987f747cce7bf9"
+        },
+        "report_sha256": "b165dbb6f533b4a482754f3ac195fe03752903831d267cd5705cfcc61331493c",
+        "scope": "Exploratory harness version; excluded from final comparisons. Earlier window-close timeouts did not record the blocking dialog and are not product-hang evidence."
+      },
+      {
+        "case": "wrap",
+        "close": "window",
+        "release_wrapper": false,
+        "invalidate_before_close": false,
+        "invalidate_on_destroy": false,
+        "quit_delay_ms": 300,
+        "returncode": -15,
+        "timeout": true,
+        "elapsed_seconds": 120.04153883398976,
+        "passed": false,
+        "id": "viewport-a8d3514588554754a0e9a0b6274ef773",
+        "source_input_sha256": {
+          "ViewportLifetime.FCMacro": "227a9d53fc870d33bb677c2807b1f839b78d596714042b6c90d2763757f58aa3",
+          "run_viewport_lifetime.py": "8c6b8132aa83af957fcdcf4e88c14ec0d08b316e1290ee530bab1602e464d494"
+        },
+        "report_sha256": "95b5d1d9ca608c24cdd6e91c9fbf11bba89511b847aac1120c199f0199bc0da9",
+        "scope": "Exploratory harness version; excluded from final comparisons. Earlier window-close timeouts did not record the blocking dialog and are not product-hang evidence."
+      },
+      {
+        "case": "wrap",
+        "close": "document",
+        "release_wrapper": false,
+        "invalidate_before_close": false,
+        "invalidate_on_destroy": true,
+        "quit_delay_ms": 300,
+        "returncode": 0,
+        "timeout": false,
+        "elapsed_seconds": 4.970673957999679,
+        "passed": true,
+        "id": "viewport-e43df3a544bd4408be55b02267c24681",
+        "source_input_sha256": {
+          "ViewportLifetime.FCMacro": "227a9d53fc870d33bb677c2807b1f839b78d596714042b6c90d2763757f58aa3",
+          "run_viewport_lifetime.py": "8c6b8132aa83af957fcdcf4e88c14ec0d08b316e1290ee530bab1602e464d494"
+        },
+        "report_sha256": "3ca69bb40daa443246079430123e4f5abd466ae7d9b3ab7e36548fcdafcf107f",
+        "scope": "Exploratory harness version; excluded from final comparisons. Earlier window-close timeouts did not record the blocking dialog and are not product-hang evidence."
+      },
+      {
+        "case": "control",
+        "close": "window",
+        "release_wrapper": false,
+        "invalidate_before_close": false,
+        "invalidate_on_destroy": false,
+        "quit_delay_ms": 300,
+        "returncode": -15,
+        "timeout": true,
+        "elapsed_seconds": 120.04337466700235,
+        "passed": false,
+        "id": "viewport-e98ade4e556348208dc4024dc0c95cad",
+        "source_input_sha256": {
+          "ViewportLifetime.FCMacro": "227a9d53fc870d33bb677c2807b1f839b78d596714042b6c90d2763757f58aa3",
+          "run_viewport_lifetime.py": "8c6b8132aa83af957fcdcf4e88c14ec0d08b316e1290ee530bab1602e464d494"
+        },
+        "report_sha256": "0a410aa55d0cd35910a8e72a7f500dba5189b5a4b23bb87bda37a90cb53ff3c0",
+        "scope": "Exploratory harness version; excluded from final comparisons. Earlier window-close timeouts did not record the blocking dialog and are not product-hang evidence."
+      },
+      {
+        "case": "wrap",
+        "close": "document",
+        "release_wrapper": true,
+        "invalidate_before_close": null,
+        "invalidate_on_destroy": null,
+        "quit_delay_ms": 300,
+        "returncode": -11,
+        "timeout": false,
+        "elapsed_seconds": 4.23795287500252,
+        "passed": false,
+        "id": "viewport-f5178b44049548fab13d3205dfd816b9",
+        "source_input_sha256": {
+          "ViewportLifetime.FCMacro": "b42b8b98bd24ef15d9b05432bdf91548ed280946219fbc859cbe660064083395",
+          "run_viewport_lifetime.py": "bda6095cde005eae4a328a8d014a37950b9346d7cfadb310c79d033d21439e64"
+        },
+        "report_sha256": "1553bd53cf8eb259bf3ca71fa077dab66ff7b9becc9a424278b6eec0c9767e19",
+        "scope": "Exploratory harness version; excluded from final comparisons. Earlier window-close timeouts did not record the blocking dialog and are not product-hang evidence."
+      }
+    ],
+    "limits": "Finite local observations on an uncontrolled host. Trial counts are not reliability estimates. The GUI-save step changed the release-reference and immediate-Quit results between exploratory versions; underlying C++ ownership/heap-order cause remains unproven."
+  },
+  "headless": {
+    "passed": true,
+    "process_exit": 0,
+    "tests": 11,
+    "failures": 0,
+    "errors": 0,
+    "test_seconds": 0.24267300000065006,
+    "whole_process_seconds": 9.007764875001158,
+    "runtime_binary_sha256": "67a66f17b663637bcf022330b37559813e65417e2a96f9da1bb3ae34cad08b60",
+    "scope": "Real Sketcher/Part native runtime; no full C++ rebuild or full FreeCAD suite"
+  },
+  "gui": {
+    "passed": true,
+    "process_exit": 0,
+    "repeats": 2,
+    "checks": [
+      "plane action enters native Sketcher; nested creation disabled",
+      "feedback follows 3 to 2 native freedoms while remaining flexible",
+      "fixed-radius circle highlights its free centre without model/undo edits",
+      "mixed sketch highlights free line endpoints and excludes constrained circle",
+      "native conflict/redundancy witnesses selected without repair or undo changes",
+      "native length-5 preview cancels with Escape; second Escape exits the tool",
+      "actions unavailable outside native sketch edit",
+      "unfinished constraints accepted; human and AI facts agree",
+      "actual Qt main-window screenshot"
+    ],
+    "whole_process_seconds": [
+      5.545331375004025,
+      5.910046459001023
+    ],
+    "keyboard_input_bridge_checked": true,
+    "pointer_placement_preview_checked": false,
+    "scope": "Synthetic Qt key press/release to native viewport and Sketcher handler; fixture manages its Python wrapper lifetime; OS keyboard delivery/accessibility and a product-level crash fix are unverified",
+    "dimension_cancel": [
+      {
+        "route": "native_qt_events",
+        "transaction": [
+          "Add length constraint",
+          3
+        ],
+        "preview_constraint_count": 4,
+        "preview_type": "Distance",
+        "preview_value": 5.0,
+        "transaction_pending": true,
+        "pending_edit_guard": true,
+        "after_first_escape": {
+          "transaction": [
+            "Dimension",
+            4
+          ],
+          "constraint_count": 3,
+          "transaction_pending": false
+        }
+      }
+    ],
+    "dimension_history": {
+      "before": [
+        1,
+        0,
+        false
+      ],
+      "after": [
+        1,
+        0,
+        false
+      ]
+    },
+    "example": {
+      "kind": "nightfall.sketch-feedback.v1",
+      "document": "Nightfall",
+      "object": "Sketch",
+      "label": "Sketch (XY)",
+      "status": "underconstrained",
+      "degrees_of_freedom": 2,
+      "geometry_count": 1,
+      "cached_degrees_of_freedom": 2,
+      "constraint_count": 1,
+      "constraints": {
+        "numbering": "one_based",
+        "conflicting": [],
+        "redundant": [],
+        "partially_redundant": [],
+        "malformed": []
+      },
+      "diagnostics_freshness": "reported_up_to_date",
+      "native_state": [
+        "Up-to-date"
+      ],
+      "transaction_pending": false,
+      "freecad_version": [
+        "1",
+        "1",
+        "4",
+        "20260928 (Git shallow)",
+        "Unknown",
+        "2026/09/28 13:46:34",
+        "(HEAD detached at 4fd3bf320)",
+        "4fd3bf320d9566a27e60069fc8387448aaa3a094"
+      ],
+      "checked": [
+        "cached_native_solver_diagnostics"
+      ],
+      "unchecked": [
+        "geometric_intent",
+        "profile_closure",
+        "manufacturing_readiness"
+      ]
+    }
+  },
+  "known_failures": [
+    {
+      "issue": "https://github.com/wckdboy/nightfall-freecad/issues/2",
+      "scope": "Interactive macOS accessibility crashes remain unresolved and are separate from this reproduction."
+    },
+    {
+      "issue": "https://github.com/wckdboy/nightfall-freecad/issues/5",
+      "scope": "Intermittent native shutdown SIGSEGV reproduced without Nightfall; owned fixture wrapper invalidation is a tested mitigation, not a general application fix."
+    }
+  ],
+  "unchecked": [
+    "Underlying C++ ownership/heap-order cause and application fix",
+    "OS keyboard input and pointer dimension placement/value acceptance/apply/undo",
+    "Full FreeCAD C++ build and complete upstream suite",
+    "General persistent naming",
+    "AI tool transport/provider integration",
+    "Assembly integration/DOF/collision",
+    "PCB/KiCad and Rendering add-ons",
+    "Simulation and CFD",
+    "Industrial parity"
+  ],
+  "artifacts": [
+    {
+      "path": "nightfall/evidence/viewport-lifetime/gui-run-c9a3b13cb0484e9383d70bfe637a5cdb.json",
+      "bytes": 4348,
+      "sha256": "9f7b07484ddd694dc495c245cee34fc5940176a86577a4d4e719242d8ed1d8e0"
+    },
+    {
+      "path": "nightfall/evidence/viewport-lifetime/gui-run-deac73572cf148dabfd9a0eabfdae3ab.json",
+      "bytes": 4348,
+      "sha256": "9f7b07484ddd694dc495c245cee34fc5940176a86577a4d4e719242d8ed1d8e0"
+    },
+    {
+      "path": "nightfall/evidence/viewport-lifetime/native-tests.json",
+      "bytes": 451,
+      "sha256": "2041de2c53cbf191d4f09da9593b1470c9ddc3db3b1044c0c3b7bd8dba4ce662"
+    }
+  ]
+}

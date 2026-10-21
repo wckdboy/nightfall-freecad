@@ -1,0 +1,153 @@
+# SPDX-FileCopyrightText: 2026 The Nightfall Authors
+# SPDX-License-Identifier: LGPL-2.1-or-later
+"""Issue #5 reproduction, intentionally independent of the Nightfall workbench."""
+import gc
+import json
+import os
+from pathlib import Path
+import sys
+import traceback
+
+import FreeCAD as App
+import FreeCADGui as Gui
+import Part
+import PySide6
+import shiboken6
+from PySide import QtCore, QtGui, QtWidgets
+
+out = Path(os.environ["NIGHTFALL_REPRO_OUTPUT"])
+case = os.environ["NIGHTFALL_REPRO_CASE"]
+close = os.environ["NIGHTFALL_REPRO_CLOSE"]
+release = os.environ["NIGHTFALL_REPRO_RELEASE"] == "1"
+invalidate = os.environ["NIGHTFALL_REPRO_INVALIDATE"] == "1"
+invalidate_on_destroy = os.environ["NIGHTFALL_REPRO_DESTROY_HOOK"] == "1"
+quit_delay = int(os.environ["NIGHTFALL_REPRO_QUIT_DELAY"])
+report = {
+    "kind": "nightfall-viewport-lifetime-reproduction",
+    "case": case,
+    "close": close,
+    "release_wrapper": release,
+    "invalidate_before_close": invalidate,
+    "invalidate_on_destroy": invalidate_on_destroy,
+    "quit_delay_ms": quit_delay,
+    "freecad_version": list(App.Version()),
+    "qt_version": QtCore.qVersion(),
+    "pyside_version": PySide6.__version__,
+    "shiboken_version": shiboken6.__version__,
+    "python_optimization": sys.flags.optimize,
+    "nightfall_imported": "Nightfall" in sys.modules,
+    "nightfall_workbench_available": "NightfallWorkbench" in Gui.listWorkbenches(),
+    "exercise_complete": False,
+    "about_to_quit": False,
+}
+references = []
+document_name = None
+
+
+def persist():
+    (out / "reproduction.json").write_text(json.dumps(report, indent=2) + "\n")
+
+
+def about_to_quit():
+    report["about_to_quit"] = True
+    persist()
+
+
+def on_view_destroyed():
+    report["destroy_hook_called"] = True
+    for view in references:
+        shiboken6.invalidate(view)
+    persist()
+
+
+def request_quit():
+    report["wrapper_valid_before_quit"] = [shiboken6.isValid(view) for view in references]
+    persist()
+    QtWidgets.QApplication.quit()
+
+
+def reject_unexpected_modal():
+    modal = QtWidgets.QApplication.activeModalWidget()
+    if modal is not None:
+        report["error"] = "Unexpected close dialog: " + modal.windowTitle()
+        report["exercise_complete"] = False
+        persist()
+        modal.close()
+        if document_name in App.listDocuments():
+            App.closeDocument(document_name)
+
+
+def finish():
+    if close == "document" and document_name in App.listDocuments():
+        App.closeDocument(document_name)
+        report["document_closed"] = True
+        report["wrapper_valid_after_document_close"] = [
+            shiboken6.isValid(view) for view in references
+        ]
+        persist()
+    if close == "window":
+        QtCore.QTimer.singleShot(200, reject_unexpected_modal)
+        report["window_close_returned"] = Gui.getMainWindow().close()
+        report["window_visible_after_close"] = Gui.getMainWindow().isVisible()
+        persist()
+    if quit_delay:
+        QtCore.QTimer.singleShot(quit_delay, request_quit)
+    else:
+        request_quit()
+
+
+def exercise():
+    global document_name
+    try:
+        assert sys.flags.optimize == 0
+        assert not report["nightfall_imported"] and not report["nightfall_workbench_available"]
+        doc = App.newDocument("ViewportLifetime")
+        document_name = doc.Name
+        box = doc.addObject("Part::Box", "Box")
+        assert doc.recompute()
+        assert abs(box.Shape.Volume - 1000) <= 1e-9
+        Gui.activeDocument().activeView().viewAxonometric()
+        Gui.activeDocument().activeView().fitAll()
+        doc.saveAs(str(out / "control.FCStd"))
+        Gui.updateGui()
+        report["gui_modified_before_gui_save"] = Gui.activeDocument().Modified
+        assert Gui.activeDocument().save()
+        report["gui_modified_after_gui_save"] = Gui.activeDocument().Modified
+        assert not Gui.activeDocument().Modified
+        if case != "control":
+            view = Gui.getMainWindow().findChild(QtWidgets.QGraphicsView)
+            assert view is not None and view.isVisible()
+            assert view.metaObject().className() == "Gui::View3DInventorViewer"
+            report["wrapper"] = {
+                "class": view.metaObject().className(),
+                "valid": shiboken6.isValid(view),
+                "owned_by_python": shiboken6.ownedByPython(view),
+                "created_by_python": shiboken6.createdByPython(view),
+            }
+            references.append(view)
+            if invalidate_on_destroy:
+                view.destroyed.connect(on_view_destroyed)
+            if case == "qt_escape":
+                for kind in (QtCore.QEvent.KeyPress, QtCore.QEvent.KeyRelease):
+                    QtWidgets.QApplication.sendEvent(
+                        view, QtGui.QKeyEvent(kind, QtCore.Qt.Key_Escape, QtCore.Qt.NoModifier)
+                    )
+                report["qt_escape_delivered"] = True
+            del view
+        if invalidate:
+            for view in references:
+                shiboken6.invalidate(view)
+        if release:
+            references.clear()
+            gc.collect()
+        assert abs(box.Shape.Volume - 1000) <= 1e-9
+        assert Gui.activeDocument().getInEdit() is None
+        report["exercise_complete"] = True
+    except Exception:
+        report["error"] = traceback.format_exc()
+    persist()
+    QtCore.QTimer.singleShot(300, finish)
+
+
+QtWidgets.QApplication.instance().aboutToQuit.connect(about_to_quit)
+QtCore.QTimer.singleShot(800, exercise)

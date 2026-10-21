@@ -1,0 +1,19 @@
+{
+  "kind": "nightfall-freecad-native-sketch-tests",
+  "tests": 11,
+  "failures": 0,
+  "errors": 0,
+  "elapsed_seconds": 0.24267300000065006,
+  "version": [
+    "1",
+    "1",
+    "4",
+    "20260928 (Git shallow)",
+    "Unknown",
+    "2026/09/28 13:46:34",
+    "(HEAD detached at 4fd3bf320)",
+    "4fd3bf320d9566a27e60069fc8387448aaa3a094"
+  ],
+  "gui_up": 0,
+  "scope": "Real Sketcher/Part native runtime; no full C++ rebuild or full FreeCAD suite"
+}
