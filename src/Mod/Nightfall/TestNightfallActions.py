@@ -5,8 +5,8 @@ import FreeCAD as App
 import FreeCADGui as Gui
 import Part
 import Sketcher
-from pivy import coin
-from PySide import QtCore, QtWidgets
+from PySide import QtCore, QtGui, QtWidgets
+import shiboken6
 
 import Nightfall
 
@@ -30,16 +30,22 @@ def model(sketch):
 
 
 def viewer():
-    return Gui.activeDocument().activeView().getViewer()
+    view = Gui.getMainWindow().findChild(QtWidgets.QGraphicsView)
+    assert view is not None and view.isVisible()
+    assert view.metaObject().className() == "Gui::View3DInventorViewer"
+    if not view.property("nightfallTestLifetimeHook"):
+        # Qt 6.8.3 needs this test's wrapper invalidated at native destruction (#5).
+        view.setProperty("nightfallTestLifetimeHook", True)
+        view.destroyed.connect(lambda: shiboken6.invalidate(view))
+    return view
 
 
 def cancel_native_dimension():
-    manager = viewer().getSoEventManager()
-    for state in (coin.SoButtonEvent.DOWN, coin.SoButtonEvent.UP):
-        event = coin.SoKeyboardEvent()
-        event.setKey(coin.SoKeyboardEvent.ESCAPE)
-        event.setState(state)
-        manager.processEvent(event)
+    view = viewer()
+    for kind in (QtCore.QEvent.KeyPress, QtCore.QEvent.KeyRelease):
+        QtWidgets.QApplication.sendEvent(
+            view, QtGui.QKeyEvent(kind, QtCore.Qt.Key_Escape, QtCore.Qt.NoModifier)
+        )
 
 
 def exercise_actions(panel, sketch, report):
@@ -145,7 +151,7 @@ def exercise_actions(panel, sketch, report):
             )
             cancellation.append(
                 {
-                    "route": "native_scene_events",
+                    "route": "native_qt_events",
                     "transaction": transaction,
                     "preview_constraint_count": sketch.ConstraintCount,
                     "preview_type": sketch.Constraints[-1].Type,
@@ -190,7 +196,7 @@ def exercise_actions(panel, sketch, report):
     assert transaction is None
     assert model(sketch)[:2] == before[:2]
     preview = cancellation[0]
-    assert preview["route"] == "native_scene_events"
+    assert preview["route"] == "native_qt_events"
     assert preview["transaction"] is not None
     assert preview["preview_constraint_count"] == constraint_count + 1
     expected = {"Distance": 5, "DistanceX": 4, "DistanceY": 3}
@@ -201,7 +207,11 @@ def exercise_actions(panel, sketch, report):
     assert first["transaction"] is not None and first["transaction"][0] == "Dimension"
     assert first["constraint_count"] == constraint_count and not first["transaction_pending"]
     report["pointer_placement_preview_checked"] = False
-    report["keyboard_input_bridge_checked"] = False
+    report["keyboard_input_bridge_checked"] = True
+    report["viewport_wrapper_scope"] = (
+        "The fixture invalidates its own Qt viewport wrapper on native destruction; "
+        "this does not fix other clients or macOS accessibility (#2, #5)."
+    )
     report["checks"].append(
         "native length-5 preview cancels with Escape; second Escape exits the tool"
     )

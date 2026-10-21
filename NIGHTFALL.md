@@ -46,11 +46,29 @@ path, then `FreeCADCmd -P /absolute/path/to/src/Mod/Nightfall /absolute/path/to/
 
 The native GUI fixture runs `FreeCAD -M /absolute/path/to/src/Mod/Nightfall
 /absolute/path/to/src/Mod/Nightfall/RunGuiTests.FCMacro` with `NIGHTFALL_GUI_OUTPUT`
-set to an existing output directory. Dimension cancellation uses native Coin scene
-events; pointer placement and the Qt keyboard bridge remain unchecked. Interactive
+set to an existing output directory. Dimension cancellation uses Qt key press/release
+events. The fixture invalidates its own viewport wrapper at native destruction;
+pointer placement/value acceptance and OS keyboard delivery remain unchecked. Interactive
 macOS accessibility crashes remain open in [#2](https://github.com/wckdboy/nightfall-freecad/issues/2).
 The [guided sketch evidence](nightfall/evidence/guided-sketch-actions.json) binds the
 tested source, native results, actual screenshots and remaining verification gaps.
+The [lifetime evidence](nightfall/evidence/viewport-lifetime.json) records repeated
+runtime trials and the fixture's later Qt keyboard checks against their exact source.
+
+The [viewport lifetime reproduction](nightfall/tools/run_viewport_lifetime.py) runs
+independently of Nightfall, using a native box in the matching official GUI runtime:
+
+```sh
+python3 nightfall/tools/run_viewport_lifetime.py --freecad /path/to/FreeCAD \
+  --output-root /path/to/results --case wrap --close document
+```
+
+Compare `--case control`, `--quit-delay-ms 0`, and `--invalidate-on-destroy` with fresh
+profiles. The runner bounds each owned process to 120 seconds, retains exact inputs,
+and treats native crashes/timeouts as failures. Programmatic document closure with a
+retained viewport wrapper reproduces intermittent [#5](https://github.com/wckdboy/nightfall-freecad/issues/5)
+in the pinned macOS runtime. Explicit invalidation at native destruction avoids this
+failure in the fixture; an application-level fix and underlying cause remain open.
 
 ## Capability milestones
 
