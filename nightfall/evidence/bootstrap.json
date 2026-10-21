@@ -1,0 +1,121 @@
+{
+  "kind": "nightfall-freecad-bootstrap-evidence",
+  "version": 1,
+  "upstream": {
+    "release": "1.1.4",
+    "commit": "4fd3bf320d9566a27e60069fc8387448aaa3a094",
+    "release_asset_sha256": "071343b4abb70492b75c973f41eaf1d2528f9b9c7ea018d22a4f46ae14d27ac0",
+    "runtime": "official macOS arm64 bundle loading fork Python files; C++ application not rebuilt"
+  },
+  "source_sha256": {
+    "src/Mod/Nightfall/CMakeLists.txt": "b833f9d5f57f4e2ede50c0998904b631c4b93218d48ac8bffbc104e7aa4fe194",
+    "src/Mod/Nightfall/NightfallGui.py": "442db07043d744e56c1cd2168ebe2062bb2ba665945bc48a02c491fbfa4b59e5",
+    "src/Mod/Nightfall/InitGui.py": "88d730fb3781fe3ba681080e4e5de651e6a17b4ddd0644cd87f000b11f97b8f5",
+    "src/Mod/Nightfall/TestNightfallGui.py": "37670e05eb97ef5f6d42509cdef3252d9498cb7d4ed68629aa34a633e07c42b2",
+    "src/Mod/Nightfall/TestNightfall.py": "ae4b061855dcb8c7844f10f4f8209165b3dde51b5bb60dc44f7d4754d1c57178",
+    "src/Mod/Nightfall/Nightfall.py": "a6fc4b01480dd0581f9ae42dfb34d94c2e222a799a59d22f2ed260f2ed5af203",
+    "src/Mod/Nightfall/Init.py": "75aa4544726c42c196578423451a36498e2e7407efdf55f2d869b26aadfabc0d",
+    "src/Mod/Nightfall/RunTests.py": "4b67f8d24f245284b0f050a29e2fcb6dd1d5442049238a953867def1c78076af",
+    "src/Mod/Nightfall/RunGuiTests.FCMacro": "375ec5d127b9567a0bcacf3a26d5d03168e6d417ddc3bea4baa28dfb2d387e06"
+  },
+  "headless": {
+    "passed": true,
+    "tests": 11,
+    "failures": 0,
+    "errors": 0,
+    "whole_process_seconds": 23.033315125001536,
+    "test_seconds": 0.7148537089960882,
+    "inspection_200_reads_mean_ms": 0.04123353999602841,
+    "scope": "Real Sketcher/Part native runtime; no full C++ rebuild or full FreeCAD suite",
+    "runtime_binary_sha256": "67a66f17b663637bcf022330b37559813e65417e2a96f9da1bb3ae34cad08b60"
+  },
+  "gui": {
+    "passed": true,
+    "whole_process_seconds": 10.69816837500548,
+    "checks": [
+      "plane action enters native Sketcher; nested creation disabled",
+      "feedback follows 3 to 2 native freedoms while remaining flexible",
+      "unfinished constraints accepted; human and AI facts agree",
+      "actual Qt main-window screenshot"
+    ],
+    "scope": "Native Qt widget and FreeCAD API integration; not accessibility or a full C++ rebuild",
+    "capture_scope": "Qt widgets; OpenGL scene exported separately in sketch-viewport.png",
+    "example": {
+      "kind": "nightfall.sketch-feedback.v1",
+      "document": "Nightfall",
+      "object": "Sketch",
+      "label": "Sketch (XY)",
+      "status": "underconstrained",
+      "degrees_of_freedom": 2,
+      "geometry_count": 1,
+      "cached_degrees_of_freedom": 2,
+      "constraint_count": 1,
+      "constraints": {
+        "numbering": "one_based",
+        "conflicting": [],
+        "redundant": [],
+        "partially_redundant": [],
+        "malformed": []
+      },
+      "diagnostics_freshness": "reported_up_to_date",
+      "native_state": [
+        "Up-to-date"
+      ],
+      "freecad_version": [
+        "1",
+        "1",
+        "4",
+        "20260928 (Git shallow)",
+        "Unknown",
+        "2026/09/28 13:46:34",
+        "(HEAD detached at 4fd3bf320)",
+        "4fd3bf320d9566a27e60069fc8387448aaa3a094"
+      ],
+      "checked": [
+        "cached_native_solver_diagnostics"
+      ],
+      "unchecked": [
+        "geometric_intent",
+        "profile_closure",
+        "manufacturing_readiness"
+      ]
+    }
+  },
+  "tolerances": {
+    "origin_placement_mm_and_rotation_vector_components": 1e-12,
+    "circle_circumference_mm": 1e-09
+  },
+  "known_failures": [
+    {
+      "issue": "https://github.com/wckdboy/nightfall-freecad/issues/2",
+      "scope": "Two interactive macOS accessibility sessions crashed in Qt Cocoa ownership/accessibility code; baseline cause/fix unverified."
+    }
+  ],
+  "unchecked": [
+    "Full FreeCAD C++ build and complete upstream suite",
+    "General persistent naming",
+    "AI tool transport/provider integration",
+    "Assembly integration/DOF/collision",
+    "PCB/KiCad and Rendering add-ons",
+    "Simulation and CFD",
+    "Industrial parity"
+  ],
+  "measurement_context": "Single local observations on an uncontrolled macOS 27.2 arm64 host. Process times include startup/shutdown; no interactive SLA is inferred.",
+  "artifacts": [
+    {
+      "path": "nightfall/evidence/sketch-panel.png",
+      "bytes": 182572,
+      "sha256": "7cdbe3c1f352b1983a259773f8bccbe73843323b038320bb250aae9f87964292"
+    },
+    {
+      "path": "nightfall/evidence/sketch-study.FCStd",
+      "bytes": 7706,
+      "sha256": "3f2d2046bc96c3e64e85b722e4e94102d25feb9be9b1d607bdb5f7619f1d41d2"
+    },
+    {
+      "path": "nightfall/evidence/sketch-viewport.png",
+      "bytes": 7575,
+      "sha256": "eeec4776c06b0d2221e50d1e9e8d16d64047b0f9081395d7b47621ae530873ba"
+    }
+  ]
+}

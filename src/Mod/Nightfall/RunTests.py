@@ -1,0 +1,5 @@
+# SPDX-FileCopyrightText: 2026 The Nightfall Authors
+# SPDX-License-Identifier: LGPL-2.1-or-later
+import TestNightfall
+
+TestNightfall.run_tests()
